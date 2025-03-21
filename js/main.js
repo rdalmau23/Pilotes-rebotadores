@@ -23,3 +23,36 @@ function random(min, max) {
 function randomRGB() {
   return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
 }
+
+
+// array pilotes
+
+const pilotes = [];
+
+for (let i = 0; i < 25; i++) {
+  const mida = random(10, 20);
+  const x = random(mida, width - mida);
+  const y = random(mida, height - mida);
+  const velX = random(-4, 4) || 1;
+  const velY = random(-4, 4) || 1;
+  const color = randomRGB();
+
+  pilotes.push(new Pilota(x, y, velX, velY, color, mida));
+}
+
+function loop() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, width, height);
+
+  for (let i = 0; i < pilotes.length; i++) {
+    pilotes[i].dibuixa(ctx);
+    pilotes[i].mou(width, height);
+    for (let j = i + 1; j < pilotes.length; j++) {
+      pilotes[i].colisio(pilotes[j]);
+    }
+  }
+  
+  requestAnimationFrame(loop);
+}
+
+loop();
